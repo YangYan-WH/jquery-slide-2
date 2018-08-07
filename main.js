@@ -66,8 +66,7 @@ setTimeout(() => {
 }, 12000); */
 /*优化后*/
 let n=1;
-setInterval(() => {
-    
+let timer = setInterval(() => {
     $(`.images>img:nth-child(${x(n)})`).removeClass('current').addClass('leave')
         .one('transitionend',function(e){
             $(e.currentTarget).removeClass('leave').addClass('enter')
@@ -85,3 +84,18 @@ function x(n){
     } // n = 1 2 3 
     return n 
 }
+document.addEventListener('visibilitychange',function(){
+    console.log(document.hidden)
+    if(document.hidden){
+        window.clearInterval(timer);
+    }else{
+        timer = setInterval(() => {
+            $(`.images>img:nth-child(${x(n)})`).removeClass('current').addClass('leave')
+                .one('transitionend',function(e){
+                    $(e.currentTarget).removeClass('leave').addClass('enter')
+                })
+            $(`.images>img:nth-child(${x(n+1)})`).removeClass('enter').addClass('current')
+            n=n+1
+        }, 3000);
+    }
+})
